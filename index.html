@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpMo Hub</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --surface3: #2d333b;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #7d8590;
+  --accent: #f97316;
+  --accent-dim: rgba(249,115,22,.15);
+  --accent-hover: #ea580c;
+  --success: #3fb950;
+  --danger: #f85149;
+  --special: #f59e0b;
+  --nec: #10b981;
+  --get: #60a5fa;
+  --gte: #a78bfa;
+  --imsa: #f87171;
+  --gridfinder: #94a3b8;
+  --radius: 10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
+a{color:var(--get);text-decoration:none}
+a:hover{text-decoration:underline}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:7px 10px;outline:none;font-size:13px}
+input:focus,select:focus{border-color:var(--accent)}
+select option{background:var(--surface2)}
+
+/* ── Header ── */
+header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+  padding:0 20px;height:52px;
+  position:sticky;top:0;z-index:200;
+}
+.brand{display:flex;align-items:baseline;gap:5px;flex-shrink:0}
+.brand-logo{font-size:18px;font-weight:900;letter-spacing:-1px;line-height:1}
+.brand-logo span{color:var(--accent)}
+.brand-sub{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+nav{display:flex;gap:2px;flex:1}
+.nav-btn{
+  background:none;border:none;color:var(--muted);
+  padding:0 14px;height:52px;font-size:13px;font-weight:500;
+  border-bottom:2px solid transparent;transition:all .15s;
+  white-space:nowrap;
+}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.profile-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;cursor:pointer;
+  font-size:12px;white-space:nowrap;flex-shrink:0;
+  transition:border-color .15s;
+}
+.profile-chip:hover{border-color:var(--accent)}
+.chip-flag{font-size:15px}
+.chip-name{font-weight:600}
+.chip-num{color:var(--accent);font-weight:700}
+.chip-sep{color:var(--border)}
+.chip-car{color:var(--muted);font-size:11px}
+
+/* ── Tabs ── */
+.tab{display:none;animation:fadeIn .2s ease}
+.tab.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ── Shared components ── */
+.btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);border-radius:6px;padding:6px 14px;
+  font-size:13px;font-weight:500;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s;
+}
+.btn:hover{background:var(--surface3)}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-hdr h2{font-size:15px;font-weight:700}
+.section-hdr .btn{font-size:12px;padding:4px 10px}
+
+/* ── HOME TAB ── */
+#tab-home{max-width:960px;margin:0 auto;padding:24px 20px;display:none}
+#tab-home.active{display:block}
+
+.hero-card{
+  background:linear-gradient(135deg,#1a2236 0%,#0d1117 60%,#1a1308 100%);
+  border:1px solid rgba(249,115,22,.25);
+  border-radius:14px;padding:36px 32px;
+  text-align:center;position:relative;overflow:hidden;
+  margin-bottom:28px;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -20%,rgba(249,115,22,.08) 0%,transparent 70%);
+}
+.hero-wordmark{position:relative;margin-bottom:16px}
+.hero-opmo{font-size:42px;font-weight:900;letter-spacing:-2px;line-height:1}
+.hero-opmo span{color:var(--accent)}
+.hero-racing{font-size:11px;font-weight:700;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.hero-welcome{font-size:17px;font-weight:600;margin-bottom:4px;position:relative}
+.hero-driver{font-size:13px;color:var(--muted);margin-bottom:16px;position:relative}
+.hero-driver .num{color:var(--accent);font-weight:700}
+.hero-driver .car{color:var(--text);font-weight:500}
+.hero-socials{display:flex;gap:12px;justify-content:center;position:relative}
+.social-link{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:16px;text-decoration:none;transition:border-color .15s;
+}
+.social-link:hover{border-color:var(--accent)}
+
+.home-section{margin-bottom:28px}
+.home-event-list{display:flex;flex-direction:column;gap:10px}
+.home-event-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  display:flex;align-items:center;gap:16px;
+  transition:border-color .15s;
+}
+.home-event-card:hover{border-color:var(--surface3)}
+.home-event-series{
+  font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;background:var(--surface2);
+  white-space:nowrap;flex-shrink:0;
+}
+.home-event-info{flex:1;min-width:0}
+.home-event-name{font-weight:700;font-size:14px;margin-bottom:2px}
+.home-event-meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.home-event-cd{font-size:12px;font-weight:600;color:var(--success);white-space:nowrap;flex-shrink:0}
+.home-event-past{font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+
+.stats-teaser{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.stats-teaser-text{color:var(--muted);font-size:13px}
+
+/* ── EVENTS TAB ── */
+#tab-events{display:none}
+#tab-events.active{display:block}
+.events-controls{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  position:sticky;top:52px;z-index:100;
+}
+.pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.pill{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--muted);cursor:pointer;
+  font-size:12px;font-weight:600;letter-spacing:.3px;transition:all .15s;white-space:nowrap;
+}
+.pill:hover{border-color:var(--text);color:var(--text)}
+.pill.active{color:#fff;border-color:transparent}
+.pill[data-s="all"].active{background:#374151}
+.pill[data-s="special"].active{background:var(--special)}
+.pill[data-s="nec"].active{background:var(--nec)}
+.pill[data-s="get"].active{background:var(--get)}
+.pill[data-s="gte"].active{background:var(--gte)}
+.pill[data-s="imsa"].active{background:var(--imsa)}
+.pill[data-s="gridfinder"].active{background:var(--gridfinder)}
+.events-ctrl-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toggle-label{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted);font-size:12px;user-select:none;white-space:nowrap}
+.toggle-label input{accent-color:var(--accent)}
+.toggle-label:hover{color:var(--text)}
+
+.events-next-up{
+  margin:16px 20px 0;
+  background:linear-gradient(135deg,#1a2744,#1e3a1a);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px 16px;font-size:13px;display:none;
+}
+.events-next-up.show{display:block}
+.next-up-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
+.next-up-name{font-size:15px;font-weight:700;margin-bottom:1px}
+.next-up-meta{color:var(--muted);font-size:12px}
+.next-up-cd{font-size:18px;font-weight:700;color:var(--success);margin-top:4px}
+
+.race-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:12px;padding:16px 20px;
+}
+.past-divider{padding:4px 20px 0;display:none}
+.past-divider.show{display:block}
+.past-divider button{background:none;border:none;color:var(--muted);font-size:12px;padding:6px 0;display:flex;align-items:center;gap:6px}
+.past-divider button:hover{color:var(--text)}
+
+/* Race card */
+.rcard{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:border-color .15s;
+}
+.rcard:hover{border-color:var(--surface3)}
+.rcard.past{opacity:.5}
+.rcard.attending{border-color:var(--success)}
+.rcard-stripe{height:3px}
+.rcard[data-s="special"] .rcard-stripe{background:var(--special)}
+.rcard[data-s="nec"] .rcard-stripe{background:var(--nec)}
+.rcard[data-s="get"] .rcard-stripe{background:var(--get)}
+.rcard[data-s="gte"] .rcard-stripe{background:var(--gte)}
+.rcard[data-s="imsa"] .rcard-stripe{background:var(--imsa)}
+.rcard[data-s="gridfinder"] .rcard-stripe{background:var(--gridfinder)}
+.rcard-body{padding:13px}
+.rcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px}
+.rcard-badge{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--muted)}
+.rcard[data-s="special"] .rcard-badge{color:var(--special)}
+.rcard[data-s="nec"] .rcard-badge{color:var(--nec)}
+.rcard[data-s="get"] .rcard-badge{color:var(--get)}
+.rcard[data-s="gte"] .rcard-badge{color:var(--gte)}
+.rcard[data-s="imsa"] .rcard-badge{color:var(--imsa)}
+.rcard[data-s="gridfinder"] .rcard-badge{color:var(--gridfinder)}
+.rcard-unconf{font-size:10px;color:var(--special)}
+.rcard-name{font-size:14px;font-weight:700;margin-bottom:2px;line-height:1.3}
+.rcard-track{font-size:12px;color:var(--muted);margin-bottom:7px}
+.rcard-meta{display:flex;gap:10px;font-size:11px;color:var(--muted);margin-bottom:9px;flex-wrap:wrap}
+.rcard-classes{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.class-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
+.rcard-note{font-size:11px;color:var(--special);margin-bottom:7px;font-style:italic}
+.rcard-cd{font-size:11px;color:var(--muted);margin-bottom:8px}
+.rcard-cd .cd{color:var(--success);font-weight:600}
+.slots-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.slots{display:flex;flex-wrap:wrap;gap:5px}
+.slot-btn{
+  background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+  border-radius:6px;padding:4px 9px;font-size:11px;font-family:monospace;
+  transition:all .15s;white-space:nowrap;cursor:pointer;
+}
+.slot-btn:hover{border-color:var(--success);color:var(--text)}
+.slot-btn.on{background:#14532d;border-color:var(--success);color:var(--success);font-weight:700}
+.no-slots{font-size:12px;color:var(--muted);font-style:italic}
+.grid-empty{grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)}
+
+/* ── STATS TAB ── */
+#tab-stats{display:none}
+#tab-stats.active{display:block}
+.stats-bar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:12px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  position:sticky;top:52px;z-index:100;
+}
+.upload-zone{
+  border:1px dashed var(--border);border-radius:8px;
+  padding:10px 16px;text-align:center;font-size:12px;color:var(--muted);
+  cursor:pointer;transition:border-color .15s;min-width:240px;
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);color:var(--text)}
+.upload-link{color:var(--accent);cursor:pointer;text-decoration:underline}
+#file-input{display:none}
+.stats-bar select{min-width:200px}
+.stats-bar .right{display:flex;gap:8px;align-items:center;margin-left:auto;flex-wrap:wrap}
+.stats-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--muted);user-select:none}
+.stats-toggle input{accent-color:var(--accent)}
+
+.race-meta-bar{
+  display:flex;gap:16px;flex-wrap:wrap;padding:12px 20px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  font-size:12px;color:var(--muted);align-items:center;
+}
+.race-meta-bar strong{color:var(--text)}
+.tl-group{display:flex;align-items:center;gap:6px;margin-left:auto}
+.tl-group input{width:70px;padding:4px 8px}
+
+.race-content{padding:20px}
+.team-block{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:12px;overflow:hidden;
+}
+.team-block.opmo{border-color:var(--accent)}
+.team-hdr{
+  display:grid;grid-template-columns:40px 1fr 80px 80px 60px 60px 80px 80px 80px;
+  gap:8px;padding:10px 14px;background:var(--surface2);
+  font-size:12px;font-weight:600;align-items:center;cursor:pointer;
+}
+.team-hdr:hover{background:var(--surface3)}
+.team-pos{font-size:16px;font-weight:900;color:var(--accent)}
+.team-name{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-opmo-tag{font-size:10px;color:var(--accent);font-weight:700;margin-left:4px}
+.team-val{text-align:right;color:var(--muted);font-size:12px}
+.team-val.pos-delta.up{color:var(--success)}
+.team-val.pos-delta.down{color:var(--danger)}
+.team-drivers{display:none}
+.team-drivers.open{display:block}
+.driver-row{
+  display:grid;grid-template-columns:40px 1fr 80px 80px 60px 60px 80px 80px 80px;
+  gap:8px;padding:8px 14px;border-top:1px solid var(--border);
+  font-size:12px;align-items:center;
+}
+.driver-row:hover{background:var(--surface2)}
+.driver-name{font-weight:500;padding-left:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.col-hdr{
+  display:grid;grid-template-columns:40px 1fr 80px 80px 60px 60px 80px 80px 80px;
+  gap:8px;padding:6px 14px;border-bottom:1px solid var(--border);
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);
+}
+.ir-delta.pos{color:var(--success)}
+.ir-delta.neg{color:var(--danger)}
+
+/* Claude panel */
+.claude-panel{
+  margin:0 20px 20px;border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;
+}
+.claude-hdr{
+  background:var(--surface2);padding:10px 14px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.claude-hdr span{font-weight:600;font-size:13px;flex:1}
+.claude-hdr input{flex:1;min-width:200px;max-width:300px;font-size:12px}
+.claude-msgs{min-height:100px;max-height:300px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.claude-msg{border-radius:8px;padding:8px 12px;font-size:13px;line-height:1.5;white-space:pre-wrap;max-width:85%}
+.claude-msg.user{background:var(--accent-dim);border:1px solid rgba(249,115,22,.2);align-self:flex-end}
+.claude-msg.assistant{background:var(--surface2);border:1px solid var(--border);align-self:flex-start}
+.claude-msg.loading{color:var(--muted);font-style:italic}
+.claude-input-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);background:var(--surface)}
+.claude-input-row input{flex:1}
+
+/* ── PROFILE TAB ── */
+#tab-profile{display:none;max-width:600px;margin:0 auto;padding:28px 20px}
+#tab-profile.active{display:block}
+.profile-preview-card{
+  background:linear-gradient(135deg,#1a2236,#0d1117,#1a1308);
+  border:1px solid rgba(249,115,22,.2);border-radius:14px;
+  padding:24px;text-align:center;margin-bottom:24px;
+}
+.pv-flag{font-size:28px;margin-bottom:6px}
+.pv-name{font-size:20px;font-weight:800;margin-bottom:2px}
+.pv-num{color:var(--accent);font-size:18px;font-weight:700}
+.pv-car{color:var(--muted);font-size:13px;margin-top:4px}
+.profile-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.profile-form h2{font-size:15px;font-weight:700;margin-bottom:16px}
+.profile-form h3{font-size:13px;font-weight:600;color:var(--muted);margin:18px 0 12px;padding-top:14px;border-top:1px solid var(--border)}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.form-row input,.form-row select{width:100%}
+.save-row{margin-top:18px;display:flex;align-items:center;gap:10px}
+.save-msg{font-size:12px;color:var(--success);display:none}
+.save-msg.show{display:block}
+
+/* ── SETUP MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);
+  z-index:500;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:32px;width:100%;max-width:440px;
+  animation:fadeIn .2s ease;
+}
+.modal-logo{font-size:24px;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:8px}
+.modal-logo span{color:var(--accent)}
+.modal h2{text-align:center;font-size:18px;margin-bottom:6px}
+.modal p{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px}
+.modal .form-row input,.modal .form-row select{width:100%}
+.modal .btn-accent{width:100%;justify-content:center;padding:10px;margin-top:8px;font-size:14px}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:24px;right:24px;
+  background:#1e3a5f;border:1px solid var(--get);border-radius:8px;
+  padding:10px 16px;font-size:13px;color:#93c5fd;z-index:1000;
+  opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;
+}
+#toast.show{opacity:1;transform:none}
+
+/* ── Utility ── */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo"><span>OP</span>MO</div>
+    <div class="brand-sub">Racing</div>
+  </div>
+  <nav>
+    <button class="nav-btn active" data-tab="home">Home</button>
+    <button class="nav-btn" data-tab="events">Events</button>
+    <button class="nav-btn" data-tab="stats">Race Stats</button>
+    <button class="nav-btn" data-tab="profile">Profile</button>
+  </nav>
+  <div class="profile-chip" id="profile-chip" onclick="switchTab('profile')">
+    <span class="chip-flag" id="chip-flag"></span>
+    <span class="chip-name" id="chip-name">Set up profile</span>
+    <span class="chip-sep" id="chip-sep" style="display:none">·</span>
+    <span class="chip-num" id="chip-num"></span>
+    <span class="chip-sep2" id="chip-sep2" style="display:none">—</span>
+    <span class="chip-car" id="chip-car"></span>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="tab-home" class="tab">
+  <div class="hero-card">
+    <div class="hero-wordmark">
+      <div class="hero-opmo"><span>OP</span>MO</div>
+      <div class="hero-racing">Racing</div>
+    </div>
+    <div class="hero-welcome">Welcome back, <span id="hero-name">Driver</span> <span id="hero-flag"></span></div>
+    <div class="hero-driver">
+      <span class="num">#<span id="hero-num"></span></span>
+      &nbsp;·&nbsp;
+      <span class="car" id="hero-car">No car set</span>
+    </div>
+    <div class="hero-socials" id="hero-socials"></div>
+  </div>
+
+  <div class="home-section">
+    <div class="section-hdr">
+      <h2>Upcoming Events</h2>
+      <button class="btn" onclick="switchTab('events')">View All →</button>
+    </div>
+    <div class="home-event-list" id="home-events">
+      <div style="color:var(--muted);font-size:13px">Loading schedule…</div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="section-hdr">
+      <h2>Race Stats</h2>
+      <button class="btn" onclick="switchTab('stats')">Open →</button>
+    </div>
+    <div class="stats-teaser">
+      <div class="stats-teaser-text">Upload iRacing event result CSVs to analyse race data, track OpMo performance, and export reports.</div>
+      <button class="btn btn-accent" onclick="switchTab('stats')" style="margin-left:16px;flex-shrink:0">Upload CSV</button>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTS -->
+<div id="tab-events" class="tab">
+  <div class="events-controls">
+    <div class="pills" id="pills">
+      <div class="pill active" data-s="all">All</div>
+      <div class="pill" data-s="special">Special Events</div>
+      <div class="pill" data-s="nec">NEC</div>
+      <div class="pill" data-s="get">GET</div>
+      <div class="pill" data-s="gte">GT Endurance</div>
+      <div class="pill" data-s="imsa">IMSA</div>
+      <div class="pill" data-s="gridfinder">Gridfinder</div>
+    </div>
+    <div class="events-ctrl-right">
+      <label class="toggle-label"><input type="checkbox" id="att-only"> My races only</label>
+      <button class="btn" id="share-btn">&#128279; Share</button>
+      <button class="btn" id="ical-btn">&#128197; iCal</button>
+    </div>
+  </div>
+
+  <div class="events-next-up" id="events-next-up">
+    <div class="next-up-label">&#9889; Next up</div>
+    <div class="next-up-name" id="next-up-name"></div>
+    <div class="next-up-meta" id="next-up-meta"></div>
+    <div class="next-up-cd" id="next-up-cd"></div>
+  </div>
+
+  <div class="race-grid" id="events-grid"></div>
+  <div class="past-divider" id="past-divider">
+    <button id="toggle-past">&#9660; Show past races (<span id="past-count">0</span>)</button>
+  </div>
+  <div class="race-grid hidden" id="past-grid"></div>
+</div>
+
+<!-- STATS -->
+<div id="tab-stats" class="tab">
+  <div class="stats-bar">
+    <div class="upload-zone" id="upload-zone">
+      Drop CSV files here, or <label class="upload-link" for="file-input">browse</label>
+      <input type="file" id="file-input" accept=".csv" multiple>
+    </div>
+    <select id="race-select"><option value="">— select a race —</option></select>
+    <div class="right">
+      <label class="stats-toggle"><input type="checkbox" id="opmo-only"> OpMo only</label>
+      <button class="btn" id="export-btn">Export CSV</button>
+      <button class="btn" id="ai-btn">&#129302; Ask AI</button>
+    </div>
+  </div>
+  <div class="race-meta-bar hidden" id="race-meta-bar"></div>
+  <div id="race-content" class="race-content"></div>
+  <div class="claude-panel hidden" id="claude-panel">
+    <div class="claude-hdr">
+      <span>&#129302; AI Race Analysis</span>
+      <input type="password" id="claude-key" placeholder="Anthropic API key (stored locally)">
+    </div>
+    <div class="claude-msgs" id="claude-msgs"></div>
+    <div class="claude-input-row">
+      <input type="text" id="claude-input" placeholder="Ask about this race…">
+      <button class="btn btn-accent" id="claude-send">Ask</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="tab-profile" class="tab">
+  <div class="profile-preview-card">
+    <div class="pv-flag" id="pv-flag">🏁</div>
+    <div class="pv-name" id="pv-name">Driver</div>
+    <div class="pv-num" id="pv-num">#—</div>
+    <div class="pv-car" id="pv-car">No car set</div>
+  </div>
+  <div class="profile-form">
+    <h2>Driver Profile</h2>
+    <div class="form-row"><label>Display Name</label><input id="pf-name" type="text" maxlength="30" placeholder="Your name"></div>
+    <div class="form-row"><label>Car Number</label><input id="pf-num" type="text" maxlength="3" placeholder="25"></div>
+    <div class="form-row"><label>Nationality</label><select id="pf-flag"></select></div>
+    <div class="form-row"><label>Current Car</label><select id="pf-car"></select></div>
+    <h3>Social Links</h3>
+    <div class="form-row"><label>Instagram URL</label><input id="pf-ig" type="url" placeholder="https://instagram.com/…"></div>
+    <div class="form-row"><label>Twitch URL</label><input id="pf-tw" type="url" placeholder="https://twitch.tv/…"></div>
+    <div class="form-row"><label>Website URL</label><input id="pf-web" type="url" placeholder="https://…"></div>
+    <div class="save-row">
+      <button class="btn btn-accent" id="save-profile">Save Changes</button>
+      <span class="save-msg" id="save-msg">Saved!</span>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP MODAL -->
+<div class="modal-overlay" id="setup-modal">
+  <div class="modal">
+    <div class="modal-logo"><span>OP</span>MO Racing</div>
+    <h2>Welcome to OpMo Hub</h2>
+    <p>Set up your driver profile to get started.</p>
+    <div class="form-row"><label>Your Name</label><input id="s-name" type="text" maxlength="30" placeholder="Your name"></div>
+    <div class="form-row"><label>Car Number</label><input id="s-num" type="text" maxlength="3" placeholder="25"></div>
+    <div class="form-row"><label>Nationality</label><select id="s-flag"></select></div>
+    <div class="form-row"><label>Current Car</label><select id="s-car"></select></div>
+    <button class="btn btn-accent" id="setup-save">Get Started →</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── Constants ────────────────────────────────────────────────────────────────
+const PROFILE_KEY   = 'opmo-profile';
+const ATTENDING_KEY = 'opmo-attending';
+const CLAUDE_KEY_K  = 'opmo-claude-key';
+const OPMO_RE       = /opmo/i;
+const KM_TO_MI      = 0.621371;
+
+const SERIES_LABELS = {
+  special:'Special Events', nec:'NEC', get:'GET',
+  gte:'GT Endurance', imsa:'IMSA', gridfinder:'Gridfinder',
+};
+
+const COUNTRIES = [
+  {f:'🇬🇧',n:'United Kingdom'},{f:'🇺🇸',n:'United States'},
+  {f:'🇩🇪',n:'Germany'},{f:'🇫🇷',n:'France'},{f:'🇮🇹',n:'Italy'},
+  {f:'🇳🇱',n:'Netherlands'},{f:'🇧🇪',n:'Belgium'},{f:'🇦🇺',n:'Australia'},
+  {f:'🇨🇦',n:'Canada'},{f:'🇧🇷',n:'Brazil'},{f:'🇵🇹',n:'Portugal'},
+  {f:'🇪🇸',n:'Spain'},{f:'🇸🇪',n:'Sweden'},{f:'🇫🇮',n:'Finland'},
+  {f:'🇩🇰',n:'Denmark'},{f:'🇳🇴',n:'Norway'},{f:'🇦🇹',n:'Austria'},
+  {f:'🇨🇭',n:'Switzerland'},{f:'🇯🇵',n:'Japan'},{f:'🇰🇷',n:'South Korea'},
+  {f:'🇳🇿',n:'New Zealand'},{f:'🇿🇦',n:'South Africa'},{f:'🇲🇽',n:'Mexico'},
+  {f:'🇦🇷',n:'Argentina'},{f:'🇵🇱',n:'Poland'},{f:'🇨🇿',n:'Czech Republic'},
+];
+
+const CAR_GROUPS = [
+  { g:'GTP / Hypercar', cars:['BMW M Hybrid V8','Cadillac V-Series.R GTP','Ferrari 499P','Porsche 963 GTP','Toyota GR010 Hybrid'] },
+  { g:'LMP2',  cars:['Oreca 07'] },
+  { g:'LMP3',  cars:['Ligier JS P320'] },
+  { g:'GT3',   cars:['Aston Martin Vantage GT3','Audi R8 LMS EVO II GT3','Bentley Continental GT3 2018','BMW M4 GT3','Chevrolet Corvette Z06 GT3.R','Ferrari 296 GT3','Ford Mustang GT3','Lamborghini Huracán GT3 EVO2','McLaren 720S GT3 EVO','Mercedes-AMG GT3 EVO 2020','Porsche 911 GT3 R (992)'] },
+  { g:'GT4',   cars:['BMW M4 GT4','Ferrari 488 GT4','McLaren 570S GT4','Porsche 718 Cayman GT4 RS CS','Toyota GR Supra GT4 EVO'] },
+  { g:'Cup',   cars:['BMW M2 CS Racing','Porsche 911 GT3 Cup (992)'] },
+];
+
+const TRACK_KM = [
+  {re:/n.rburgring.*comb/i,km:25.378},{re:/sarthe|le\s*mans/i,km:13.626},
+  {re:/spa/i,km:7.004},{re:/sebring/i,km:6.019},{re:/daytona/i,km:5.730},
+  {re:/mount\s*panorama|bathurst/i,km:6.213},{re:/silverstone/i,km:5.891},
+  {re:/watkins\s*glen/i,km:5.435},{re:/road\s*america/i,km:6.515},
+  {re:/road\s*atlanta|petit/i,km:4.088},{re:/laguna\s*seca/i,km:3.602},
+  {re:/portimao|algarve/i,km:4.684},{re:/monza/i,km:5.793},
+  {re:/suzuka/i,km:5.807},{re:/imola/i,km:4.909},
+  {re:/cota|americas/i,km:5.513},{re:/fuji/i,km:4.563},
+  {re:/barber/i,km:3.737},{re:/sonoma/i,km:3.998},
+  {re:/indianapolis/i,km:4.192},{re:/zandvoort/i,km:4.259},
+  {re:/nurburgring.*gp|n.rburgring.*grand/i,km:5.137},
+  {re:/thruxton/i,km:3.812},{re:/adelaide/i,km:3.219},
+  {re:/lausitz|eurospeedway/i,km:4.574},{re:/oschersleben/i,km:3.667},
+  {re:/vir|virginia/i,km:5.271},
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let profile = {};
+let schedule = [];
+let attending = {};
+let activeSeries = 'all';
+let attendingOnly = false;
+let pastExpanded = false;
+let cdTimers = [];
+let races = {};
+let manifest = [];
+let currentFile = null;
+let opmoOnly = false;
+let trackOverrides = {};
+let claudeMsgs = [];
+let sharedView = false;
+
+// ── Profile ──────────────────────────────────────────────────────────────────
+function loadProfile() {
+  try { profile = JSON.parse(localStorage.getItem(PROFILE_KEY)) || {}; } catch { profile = {}; }
+}
+function saveProfile() {
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+}
+function hasProfile() { return !!(profile.name && profile.name.trim()); }
+
+function renderProfileChip() {
+  document.getElementById('chip-flag').textContent = profile.flag || '';
+  document.getElementById('chip-name').textContent = profile.name || 'Set up profile';
+  const hasNum = !!(profile.number);
+  document.getElementById('chip-sep').style.display  = hasNum ? '' : 'none';
+  document.getElementById('chip-sep2').style.display = hasNum ? '' : 'none';
+  document.getElementById('chip-num').textContent  = hasNum ? '#' + profile.number : '';
+  document.getElementById('chip-car').textContent  = profile.car || '';
+}
+
+function renderHero() {
+  document.getElementById('hero-name').textContent = profile.name || 'Driver';
+  document.getElementById('hero-flag').textContent = profile.flag || '';
+  document.getElementById('hero-num').textContent  = profile.number || '—';
+  document.getElementById('hero-car').textContent  = profile.car || 'No car set';
+  const s = document.getElementById('hero-socials');
+  s.innerHTML = '';
+  if (profile.instagram) s.innerHTML += `<a class="social-link" href="${profile.instagram}" target="_blank">&#128247;</a>`;
+  if (profile.twitch)    s.innerHTML += `<a class="social-link" href="${profile.twitch}"    target="_blank">&#127918;</a>`;
+  if (profile.website)   s.innerHTML += `<a class="social-link" href="${profile.website}"   target="_blank">&#127760;</a>`;
+}
+
+function renderProfileTab() {
+  document.getElementById('pv-flag').textContent = profile.flag || '🏁';
+  document.getElementById('pv-name').textContent = profile.name || 'Driver';
+  document.getElementById('pv-num').textContent  = profile.number ? '#' + profile.number : '#—';
+  document.getElementById('pv-car').textContent  = profile.car || 'No car set';
+  document.getElementById('pf-name').value = profile.name || '';
+  document.getElementById('pf-num').value  = profile.number || '';
+  document.getElementById('pf-flag').value = profile.flag || '🇬🇧';
+  document.getElementById('pf-car').value  = profile.car || '';
+  document.getElementById('pf-ig').value   = profile.instagram || '';
+  document.getElementById('pf-tw').value   = profile.twitch || '';
+  document.getElementById('pf-web').value  = profile.website || '';
+}
+
+function buildCountrySelect(el) {
+  el.innerHTML = COUNTRIES.map(c => `<option value="${c.f}">${c.f} ${c.n}</option>`).join('');
+}
+function buildCarSelect(el) {
+  el.innerHTML = '<option value="">— select a car —</option>' +
+    CAR_GROUPS.map(g =>
+      `<optgroup label="${g.g}">${g.cars.map(c => `<option value="${c}">${c}</option>`).join('')}</optgroup>`
+    ).join('');
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector(`.nav-btn[data-tab="${id}"]`)?.classList.add('active');
+  if (id === 'profile') renderProfileTab();
+  if (id === 'home') renderHero();
+}
+document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+// ── Profile form handlers ─────────────────────────────────────────────────────
+['pf-name','pf-num','pf-flag','pf-car','pf-ig','pf-tw','pf-web'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    document.getElementById('pv-flag').textContent = document.getElementById('pf-flag').value || '🏁';
+    document.getElementById('pv-name').textContent = document.getElementById('pf-name').value || 'Driver';
+    const n = document.getElementById('pf-num').value;
+    document.getElementById('pv-num').textContent = n ? '#' + n : '#—';
+    document.getElementById('pv-car').textContent = document.getElementById('pf-car').value || 'No car set';
+  });
+});
+
+document.getElementById('save-profile').addEventListener('click', () => {
+  profile.name      = document.getElementById('pf-name').value.trim();
+  profile.number    = document.getElementById('pf-num').value.trim();
+  profile.flag      = document.getElementById('pf-flag').value;
+  profile.car       = document.getElementById('pf-car').value;
+  profile.instagram = document.getElementById('pf-ig').value.trim();
+  profile.twitch    = document.getElementById('pf-tw').value.trim();
+  profile.website   = document.getElementById('pf-web').value.trim();
+  saveProfile();
+  renderProfileChip();
+  renderHero();
+  const msg = document.getElementById('save-msg');
+  msg.classList.add('show');
+  setTimeout(() => msg.classList.remove('show'), 2500);
+});
+
+// ── Setup modal ───────────────────────────────────────────────────────────────
+document.getElementById('setup-save').addEventListener('click', () => {
+  const name = document.getElementById('s-name').value.trim();
+  if (!name) { document.getElementById('s-name').focus(); return; }
+  profile.name   = name;
+  profile.number = document.getElementById('s-num').value.trim();
+  profile.flag   = document.getElementById('s-flag').value;
+  profile.car    = document.getElementById('s-car').value;
+  saveProfile();
+  document.getElementById('setup-modal').classList.remove('show');
+  renderProfileChip();
+  renderHero();
+});
+
+// ── Events: time helpers ──────────────────────────────────────────────────────
+const TZ = 'America/New_York';
+function fmtSlotShort(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{weekday:'short',day:'numeric',month:'short',timeZone:TZ}) +
+    ' · ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:TZ,hour12:true}) + ' ET';
+}
+function fmtSlotFull(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:TZ}) +
+    ' at ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:TZ,hour12:true}) + ' ET';
+}
+function countdown(ms) {
+  if (ms <= 0) return null;
+  const s=Math.floor(ms/1000), m=Math.floor(s/60), h=Math.floor(m/60), d=Math.floor(h/24);
+  if (d>0) return `${d}d ${h%24}h ${m%60}m`;
+  if (h>0) return `${h}h ${m%60}m ${s%60}s`;
+  return `${m}m ${s%60}s`;
+}
+function nextSlotMs(race) {
+  const now = Date.now();
+  for (const sl of (race.slots||[])) { const t=new Date(sl).getTime(); if(t>now) return t-now; }
+  return -1;
+}
+function isPast(race) {
+  if (!race.slots?.length) return true;
+  const last = new Date(race.slots[race.slots.length-1]);
+  last.setTime(last.getTime() + (race.duration_h||0)*3600000);
+  return last < new Date();
+}
+
+// ── Events: attending ─────────────────────────────────────────────────────────
+function loadAttending() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(ATTENDING_KEY)||'{}');
+    attending = Object.fromEntries(Object.entries(raw).map(([k,v])=>[k,new Set(v)]));
+  } catch { attending = {}; }
+}
+function saveAttending() { if(sharedView) return; localStorage.setItem(ATTENDING_KEY, JSON.stringify(Object.fromEntries(Object.entries(attending).map(([k,v])=>[k,[...v]])))); }
+
+// ── Events: URL hash ──────────────────────────────────────────────────────────
+function encodeHash(att) {
+  const parts=[];
+  for(const[id,slots] of Object.entries(att)) if(slots.size) parts.push(id+':'+[...slots].sort().join('+'));
+  return parts.length ? '#s='+encodeURIComponent(parts.join(',')) : '#';
+}
+function decodeHash(hash) {
+  const m=hash.match(/[#&]s=([^&]*)/); if(!m) return null;
+  const raw=decodeURIComponent(m[1]); if(!raw) return null;
+  const result={};
+  for(const part of raw.split(',')) { const[id,slots]=part.split(':'); if(id) result[id]=new Set((slots||'').split('+').map(Number).filter(n=>!isNaN(n))); }
+  return result;
+}
+
+// ── Events: render ────────────────────────────────────────────────────────────
+function clearCd() { cdTimers.forEach(clearInterval); cdTimers=[]; }
+
+function buildEventCard(race) {
+  const att = attending[race.id] || new Set();
+  const past = isPast(race);
+  const hasAtt = att.size > 0;
+  const cdMs = nextSlotMs(race);
+
+  const card = document.createElement('div');
+  card.className = 'rcard' + (past?' past':'') + (hasAtt?' attending':'');
+  card.dataset.s = race.series;
+  card.dataset.id = race.id;
+
+  const slotBtns = (race.slots||[]).map((sl,i) => {
+    const on = att.has(i);
+    return `<button class="slot-btn${on?' on':''}" data-id="${race.id}" data-i="${i}" title="${fmtSlotFull(sl)}">${fmtSlotShort(sl)}</button>`;
+  }).join('');
+
+  const metaDate = race.slots?.length ? new Date(race.slots[0]).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}) : '';
+  const cdHtml = !past && cdMs>0 ? `<div class="rcard-cd" data-id="${race.id}">Next slot in <span class="cd">${countdown(cdMs)}</span></div>` : past ? '<div class="rcard-cd">Completed</div>' : '';
+
+  card.innerHTML = `<div class="rcard-stripe"></div><div class="rcard-body">
+    <div class="rcard-top">
+      <span class="rcard-badge">${SERIES_LABELS[race.series]||race.series}</span>
+      ${!race.confirmed ? '<span class="rcard-unconf">⚠ Unconfirmed</span>' : ''}
+    </div>
+    <div class="rcard-name">${race.name}</div>
+    <div class="rcard-track">${race.track}</div>
+    <div class="rcard-meta">
+      ${metaDate ? `<span>&#128197; ${metaDate}</span>` : ''}
+      ${race.duration_h ? `<span>&#9201; ${race.duration_h}h</span>` : ''}
+    </div>
+    ${race.car_classes?.length ? `<div class="rcard-classes">${race.car_classes.map(c=>`<span class="class-tag">${c}</span>`).join('')}</div>` : ''}
+    ${race.notes ? `<div class="rcard-note">${race.notes}</div>` : ''}
+    ${cdHtml}
+    ${race.slots?.length ? `<div class="slots-lbl">Slots — click to mark attending</div><div class="slots">${slotBtns}</div>` : '<div class="no-slots">Season complete — check for next season</div>'}
+  </div>`;
+
+  card.querySelectorAll('.slot-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (sharedView) return;
+      const id=btn.dataset.id, i=Number(btn.dataset.i);
+      if (!attending[id]) attending[id]=new Set();
+      attending[id].has(i) ? attending[id].delete(i) : attending[id].add(i);
+      saveAttending(); renderEvents();
+    });
+  });
+  return card;
+}
+
+function renderEvents() {
+  clearCd();
+  const grid = document.getElementById('events-grid');
+  const pgrid = document.getElementById('past-grid');
+  grid.innerHTML=''; pgrid.innerHTML='';
+
+  const filtered = schedule.filter(r => {
+    if (activeSeries!=='all' && r.series!==activeSeries) return false;
+    if (attendingOnly && !(attending[r.id]?.size>0)) return false;
+    return true;
+  });
+  const upcoming = filtered.filter(r=>!isPast(r));
+  const past     = filtered.filter(r=>isPast(r));
+
+  if (!upcoming.length) grid.innerHTML='<div class="grid-empty">No upcoming races match your filter.</div>';
+  else upcoming.forEach(r=>grid.appendChild(buildEventCard(r)));
+
+  document.getElementById('past-count').textContent = past.length;
+  const div = document.getElementById('past-divider');
+  if (past.length) {
+    div.classList.add('show');
+    past.forEach(r=>pgrid.appendChild(buildEventCard(r)));
+    document.getElementById('toggle-past').innerHTML = `${pastExpanded?'▲ Hide':'▼ Show'} past races (<span id="past-count">${past.length}</span>)`;
+    pgrid.classList.toggle('hidden',!pastExpanded);
+  } else { div.classList.remove('show'); }
+
+  // Next-up banner
+  const now=Date.now(); let best=null, bestMs=Infinity;
+  for(const r of schedule){ const ms=nextSlotMs(r); if(ms>0&&ms<bestMs){bestMs=ms;best=r;} }
+  const banner=document.getElementById('events-next-up');
+  if(best){ banner.classList.add('show');
+    document.getElementById('next-up-name').textContent=best.name;
+    document.getElementById('next-up-meta').textContent=fmtSlotShort(best.slots.find(s=>new Date(s).getTime()>now));
+    const cdEl=document.getElementById('next-up-cd');
+    cdEl.textContent=countdown(bestMs);
+    const t=setInterval(()=>{const ms=nextSlotMs(best);if(ms<=0){clearInterval(t);cdEl.textContent='Starting now!';return;}cdEl.textContent=countdown(ms);},1000);
+    cdTimers.push(t);
+  } else banner.classList.remove('show');
+
+  // Individual card countdowns
+  document.querySelectorAll('.rcard-cd[data-id]').forEach(el=>{
+    const race=schedule.find(r=>r.id===el.dataset.id); if(!race) return;
+    const t=setInterval(()=>{const ms=nextSlotMs(race);const sp=el.querySelector('.cd');if(!sp){clearInterval(t);return;}if(ms<=0){clearInterval(t);sp.textContent='Starting...';return;}sp.textContent=countdown(ms);},1000);
+    cdTimers.push(t);
+  });
+}
+
+function renderHomeEvents() {
+  const upcoming = schedule.filter(r=>!isPast(r)).slice(0,4);
+  const el = document.getElementById('home-events');
+  if (!upcoming.length) { el.innerHTML='<div style="color:var(--muted);font-size:13px">No upcoming events found.</div>'; return; }
+  el.innerHTML = upcoming.map(r => {
+    const ms=nextSlotMs(r);
+    const cd=ms>0?`<span class="home-event-cd">${countdown(ms)}</span>`:`<span class="home-event-past">Past</span>`;
+    const date=r.slots?.length?new Date(r.slots[0]).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'}):'';
+    return `<div class="home-event-card">
+      <span class="home-event-series" style="color:var(--${r.series})">${SERIES_LABELS[r.series]||r.series}</span>
+      <div class="home-event-info">
+        <div class="home-event-name">${r.name}</div>
+        <div class="home-event-meta">
+          ${date?`<span>&#128197; ${date}</span>`:''}
+          <span>&#128205; ${r.track}</span>
+          ${r.duration_h?`<span>&#9201; ${r.duration_h}h</span>`:''}
+        </div>
+      </div>
+      ${cd}
+    </div>`;
+  }).join('');
+
+  // Home countdowns
+  document.querySelectorAll('.home-event-cd').forEach((el,idx)=>{
+    const race=upcoming[idx]; if(!race) return;
+    const t=setInterval(()=>{const ms=nextSlotMs(race);if(ms<=0){clearInterval(t);el.textContent='Starting now!';return;}el.textContent=countdown(ms);},1000);
+    cdTimers.push(t);
+  });
+}
+
+// Pills & toggles
+document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+  p.classList.add('active'); activeSeries=p.dataset.s; renderEvents();
+}));
+document.getElementById('att-only').addEventListener('change',e=>{attendingOnly=e.target.checked;renderEvents();});
+document.getElementById('toggle-past').addEventListener('click',()=>{pastExpanded=!pastExpanded;renderEvents();});
+
+// Share & iCal
+document.getElementById('share-btn').addEventListener('click',()=>{
+  const url=location.origin+location.pathname+encodeHash(attending);
+  navigator.clipboard.writeText(url).then(()=>toast('URL copied!')).catch(()=>prompt('Copy:',url));
+});
+document.getElementById('ical-btn').addEventListener('click',()=>{
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//OpMo Hub//EN','X-WR-CALNAME:OpMo Endurance 2026'];
+  let n=0;
+  for(const race of schedule){
+    const att=attending[race.id]; if(!att?.size) continue;
+    for(const i of att){
+      const sl=race.slots[i]; if(!sl) continue;
+      const s=new Date(sl), e=new Date(s.getTime()+(race.duration_h||2)*3600000);
+      const fmt=d=>d.toISOString().replace(/[-:]/g,'').replace('.000','');
+      lines.push('BEGIN:VEVENT',`UID:${race.id}-s${i}@opmo-hub`,`SUMMARY:${race.name} [iRacing]`,`DTSTART:${fmt(s)}`,`DTEND:${fmt(e)}`,`DESCRIPTION:${SERIES_LABELS[race.series]||''} · ${race.duration_h}h · ${race.track}`,`LOCATION:${race.track}`,'END:VEVENT');
+      n++;
+    }
+  }
+  lines.push('END:VCALENDAR');
+  if(!n){toast('No attended slots to export.');return;}
+  const blob=new Blob([lines.join('\r\n')],{type:'text/calendar'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='opmo-endurance-2026.ics'; a.click(); URL.revokeObjectURL(a.href);
+});
+
+// ── Race Stats ────────────────────────────────────────────────────────────────
+function trackKm(filename) {
+  if (trackOverrides[filename]!=null) return trackOverrides[filename];
+  const track=(races[filename]?.meta['Track']||'').toLowerCase();
+  for(const e of TRACK_KM) if(e.re.test(track)) return e.km;
+  return null;
+}
+function fmtDist(laps,km){ if(!km||!laps) return '—'; return (laps*km*KM_TO_MI).toFixed(1)+' mi'; }
+function fmtLap(s){ if(!s||s==='-1') return '—'; const v=parseFloat(s); if(isNaN(v)||v<=0) return '—'; const m=Math.floor(v/60); return m+'m '+((v%60).toFixed(3))+'s'; }
+
+function parseEventCSV(text) {
+  const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  let blankIdx=-1;
+  for(let i=1;i<lines.length;i++){ if(lines[i].replace(/[",\s]/g,'')===''){blankIdx=i;break;} }
+  const metaP=Papa.parse(lines.slice(0,blankIdx).join('\n'),{header:true,skipEmptyLines:true});
+  const resP =Papa.parse(lines.slice(blankIdx+1).join('\n'),{header:true,skipEmptyLines:true});
+  const meta=metaP.data[0]||{};
+  const rows=resP.data.filter(r=>r['Team ID']);
+  const teamMap=new Map();
+  for(const row of rows){
+    const tid=row['Team ID']; if(!teamMap.has(tid)) teamMap.set(tid,{summary:null,drivers:[]});
+    const g=teamMap.get(tid);
+    if(row['Cust ID']===tid) g.summary=row; else g.drivers.push(row);
+  }
+  const teams=[...teamMap.values()].filter(t=>t.summary).sort((a,b)=>parseInt(a.summary['Fin Pos'])-parseInt(b.summary['Fin Pos']));
+  return{meta,teams};
+}
+
+async function handleFiles(files) {
+  const csvFiles=[...files].filter(f=>f.name.toLowerCase().endsWith('.csv'));
+  for(const file of csvFiles){
+    const buf=await file.arrayBuffer();
+    const text=new TextDecoder('windows-1252').decode(buf);
+    const data=parseEventCSV(text);
+    const key=file.name;
+    if(!manifest.includes(key)) manifest.push(key);
+    races[key]=data;
+    const sel=document.getElementById('race-select');
+    if(![...sel.options].some(o=>o.value===key)){
+      const opt=document.createElement('option'); opt.value=key; opt.textContent=key; sel.appendChild(opt);
+    }
+    if(manifest.length===1||sel.value==='') sel.value=key;
+  }
+  if(manifest.length) { currentFile=document.getElementById('race-select').value; renderRaceView(); }
+}
+
+document.getElementById('race-select').addEventListener('change',e=>{ currentFile=e.target.value; renderRaceView(); });
+document.getElementById('opmo-only').addEventListener('change',e=>{ opmoOnly=e.target.checked; renderRaceView(); });
+document.getElementById('export-btn').addEventListener('click',exportCSV);
+document.getElementById('ai-btn').addEventListener('click',()=>{
+  if(!currentFile){toast('Load a race first.');return;}
+  document.getElementById('claude-panel').classList.toggle('hidden');
+});
+
+const uz=document.getElementById('upload-zone');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
+uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
+uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');handleFiles(e.dataTransfer.files);});
+document.getElementById('file-input').addEventListener('change',e=>handleFiles(e.target.files));
+
+function renderRaceView() {
+  if(!currentFile||!races[currentFile]){
+    document.getElementById('race-meta-bar').classList.add('hidden');
+    document.getElementById('race-content').innerHTML='';
+    return;
+  }
+  const{meta,teams}=races[currentFile];
+  const km=trackKm(currentFile);
+  const metaBar=document.getElementById('race-meta-bar');
+  metaBar.classList.remove('hidden');
+  const dateStr=meta['Start Time']?new Date(meta['Start Time']).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'—';
+  metaBar.innerHTML=`
+    <span><strong>${meta['Track']||'—'}</strong></span>
+    <span>&#128197; ${dateStr}</span>
+    <span>SoF <strong>${meta['Strength of Field']||'—'}</strong></span>
+    <span>${teams.length} teams</span>
+    ${meta['Session Name']?`<span>${meta['Session Name']}</span>`:''}
+    <div class="tl-group">
+      <label style="font-size:11px;color:var(--muted)">Track length:</label>
+      <input id="tl-input" type="number" min="0.1" step="0.1" placeholder="mi/lap" value="${km?(km*KM_TO_MI).toFixed(3):''}">
+      <button class="btn" onclick="applyTrackLen()" style="padding:4px 10px;font-size:11px">Set</button>
+      ${km?`<span style="color:var(--muted);font-size:10px">${(km*KM_TO_MI).toFixed(3)} mi</span>`:''}
+    </div>`;
+
+  const filtered=opmoOnly?teams.filter(t=>OPMO_RE.test(t.summary['Name'])):teams;
+  const content=document.getElementById('race-content');
+  if(!filtered.length){content.innerHTML='<div style="padding:20px;color:var(--muted)">No teams to display.</div>';return;}
+
+  content.innerHTML=`<div class="col-hdr"><span>Pos</span><span>Team / Driver</span><span style="text-align:right">Start</span><span style="text-align:right">Laps</span><span style="text-align:right">Inc</span><span style="text-align:right">Dist</span><span style="text-align:right">Best Lap</span><span style="text-align:right">Avg Lap</span><span style="text-align:right">iR Δ</span></div>`;
+  filtered.forEach(team=>{
+    const s=team.summary;
+    const isOpmo=OPMO_RE.test(s['Name']);
+    const startPos=parseInt(s['Starting Position'])+1||'—';
+    const finPos=parseInt(s['Fin Pos'])||'—';
+    const posDelta=typeof startPos==='number'&&typeof finPos==='number'?startPos-finPos:0;
+    const deltaClass=posDelta>0?'up':posDelta<0?'down':'';
+    const deltaStr=posDelta>0?`+${posDelta}`:String(posDelta);
+    const laps=parseInt(s['Laps Complete'])||0;
+    const distStr=fmtDist(laps,km);
+
+    const block=document.createElement('div');
+    block.className='team-block'+(isOpmo?' opmo':'');
+    block.innerHTML=`<div class="team-hdr">
+      <span class="team-pos">${s['Fin Pos']||'—'}</span>
+      <span class="team-name">${s['Name']||'—'}${isOpmo?'<span class="team-opmo-tag">[OpMo]</span>':''}</span>
+      <span class="team-val pos-delta ${deltaClass}" style="text-align:right">${deltaStr}</span>
+      <span class="team-val" style="text-align:right">${laps}</span>
+      <span class="team-val" style="text-align:right">${s['Incidents']||'—'}</span>
+      <span class="team-val" style="text-align:right">${distStr}</span>
+      <span class="team-val" style="text-align:right">${fmtLap(s['Best Lap Time'])}</span>
+      <span class="team-val" style="text-align:right">${fmtLap(s['Average Lap Time'])}</span>
+      <span class="team-val" style="text-align:right">—</span>
+    </div><div class="team-drivers">
+      ${team.drivers.map(d=>{
+        const oldIr=parseInt(d['Old iRating'])||0, newIr=parseInt(d['New iRating'])||0;
+        const irDelta=newIr-oldIr;
+        const irClass=irDelta>0?'pos':irDelta<0?'neg':'';
+        const irStr=irDelta>0?`+${irDelta}`:String(irDelta);
+        const dLaps=parseInt(d['Laps Complete'])||0;
+        return `<div class="driver-row">
+          <span></span>
+          <span class="driver-name">${d['Name']||'—'}</span>
+          <span class="team-val" style="text-align:right">${parseInt(d['Starting Position'])+1||'—'}</span>
+          <span class="team-val" style="text-align:right">${dLaps}</span>
+          <span class="team-val" style="text-align:right">${d['Incidents']||'—'}</span>
+          <span class="team-val" style="text-align:right">${fmtDist(dLaps,km)}</span>
+          <span class="team-val" style="text-align:right">${fmtLap(d['Best Lap Time'])}</span>
+          <span class="team-val" style="text-align:right">${fmtLap(d['Average Lap Time'])}</span>
+          <span class="team-val ir-delta ${irClass}" style="text-align:right">${oldIr?irStr:'—'}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+    block.querySelector('.team-hdr').addEventListener('click',()=>{
+      block.querySelector('.team-drivers').classList.toggle('open');
+    });
+    content.appendChild(block);
+  });
+}
+
+function applyTrackLen() {
+  const mi=parseFloat(document.getElementById('tl-input').value);
+  if(isNaN(mi)||mi<=0) return;
+  trackOverrides[currentFile]=mi/KM_TO_MI;
+  renderRaceView();
+}
+
+const EXPORT_HEADERS=['Race Date','Track','Series','SoF','Team','Car','Fin Pos','Start Pos','Driver','Laps','Distance (mi)','Track Length (mi)','Avg Lap','Best Lap','Incidents','Old iR','New iR','iR Delta'];
+function exportCSV() {
+  if(!manifest.length){toast('No races loaded.');return;}
+  const rows=[EXPORT_HEADERS];
+  for(const f of manifest){
+    const{meta,teams}=races[f]; if(!teams) continue;
+    const km=trackKm(f);
+    const mi=km?(km*KM_TO_MI).toFixed(3):'';
+    const date=meta['Start Time']?new Date(meta['Start Time']).toLocaleDateString('en-GB'):'';
+    for(const team of teams){
+      const s=team.summary;
+      for(const d of team.drivers){
+        const dLaps=parseInt(d['Laps Complete'])||0;
+        const oldIr=parseInt(d['Old iRating'])||0, newIr=parseInt(d['New iRating'])||0;
+        rows.push([date,meta['Track']||'',meta['Session Name']||'',meta['Strength of Field']||'',s['Name']||'',s['Car Name']||'',s['Fin Pos']||'',parseInt(s['Starting Position'])+1||'',d['Name']||'',dLaps,km?(dLaps*km*KM_TO_MI).toFixed(1):'',mi,fmtLap(d['Average Lap Time']),fmtLap(d['Best Lap Time']),d['Incidents']||'',oldIr||'',newIr||'',oldIr&&newIr?newIr-oldIr:'']);
+      }
+    }
+  }
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='opmo-race-stats.csv'; a.click();
+}
+
+// Claude AI
+document.getElementById('claude-key').addEventListener('change',e=>localStorage.setItem(CLAUDE_KEY_K,e.target.value));
+document.getElementById('claude-send').addEventListener('click',askClaude);
+document.getElementById('claude-input').addEventListener('keydown',e=>{ if(e.key==='Enter') askClaude(); });
+
+function buildRaceContext() {
+  if(!currentFile||!races[currentFile]) return '';
+  const{meta,teams}=races[currentFile];
+  const km=trackKm(currentFile);
+  const dateStr=meta['Start Time']?new Date(meta['Start Time']).toLocaleDateString('en-GB'):'';
+  let ctx=`RACE: ${meta['Track']} | ${dateStr} | SoF ${meta['Strength of Field']} | ${teams.length} teams\n\n`;
+  ctx+='TEAM STANDINGS (Pos | Team | Start | Laps | Inc | Best Lap | Avg Lap):\n';
+  for(const t of teams){
+    const s=t.summary;
+    const opmo=OPMO_RE.test(s['Name'])?'[OpMo]':'';
+    ctx+=`P${s['Fin Pos']} | ${s['Name']} ${opmo} | Start:${parseInt(s['Starting Position'])+1} | Laps:${s['Laps Complete']} | Inc:${s['Incidents']} | Best:${fmtLap(s['Best Lap Time'])} | Avg:${fmtLap(s['Average Lap Time'])}\n`;
+    for(const d of t.drivers){
+      const oldIr=parseInt(d['Old iRating'])||0,newIr=parseInt(d['New iRating'])||0;
+      ctx+=`  ${d['Name']} | Laps:${d['Laps Complete']} | Best:${fmtLap(d['Best Lap Time'])} | Inc:${d['Incidents']} | iR:${oldIr}->${newIr}(${newIr-oldIr>0?'+':''}${newIr-oldIr})\n`;
+    }
+  }
+  return ctx;
+}
+
+async function askClaude() {
+  const key=localStorage.getItem(CLAUDE_KEY_K)||document.getElementById('claude-key').value;
+  if(!key){toast('Enter an Anthropic API key.');return;}
+  const q=document.getElementById('claude-input').value.trim();
+  if(!q) return;
+  document.getElementById('claude-input').value='';
+  claudeMsgs.push({role:'user',content:q});
+  renderClaudeMsgs();
+  const loading=document.createElement('div');
+  loading.className='claude-msg loading'; loading.textContent='Thinking…';
+  document.getElementById('claude-msgs').appendChild(loading);
+
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-request-proxy':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1024,system:'You are a motorsport analyst assistant. Use the race data provided to answer questions concisely and accurately.\n\n'+buildRaceContext(),messages:claudeMsgs})
+    });
+    const data=await res.json();
+    loading.remove();
+    if(!res.ok) throw new Error(data.error?.message||'API error');
+    const reply=data.content[0]?.text||'No response.';
+    claudeMsgs.push({role:'assistant',content:reply});
+    renderClaudeMsgs();
+  } catch(e) {
+    loading.remove();
+    const err=document.createElement('div');
+    err.className='claude-msg assistant'; err.textContent='Error: '+e.message;
+    document.getElementById('claude-msgs').appendChild(err);
+  }
+}
+function renderClaudeMsgs() {
+  const el=document.getElementById('claude-msgs'); el.innerHTML='';
+  claudeMsgs.forEach(m=>{
+    const d=document.createElement('div');
+    d.className='claude-msg '+m.role; d.textContent=m.content; el.appendChild(d);
+  });
+  el.scrollTop=el.scrollHeight;
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  buildCountrySelect(document.getElementById('pf-flag'));
+  buildCountrySelect(document.getElementById('s-flag'));
+  buildCarSelect(document.getElementById('pf-car'));
+  buildCarSelect(document.getElementById('s-car'));
+
+  loadProfile();
+  loadAttending();
+
+  // Shared schedule URL?
+  const shared=decodeHash(location.hash);
+  if(shared&&Object.keys(shared).length>0){
+    sharedView=true; attending=Object.fromEntries(Object.entries(shared).map(([k,v])=>[k,new Set(v)]));
+    toast('Viewing a shared schedule — click Profile to use your own.');
+  }
+
+  renderProfileChip();
+  renderHero();
+
+  if(!hasProfile()) document.getElementById('setup-modal').classList.add('show');
+
+  // Load schedule
+  try {
+    const res=await fetch('./data/schedule.json');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    schedule=data.races||[];
+  } catch(e) {
+    document.getElementById('home-events').innerHTML='<div style="color:var(--danger);font-size:13px">Failed to load schedule. If running locally, use a local server: <code>python -m http.server 8080</code></div>';
+    console.error(e);
+  }
+
+  renderHomeEvents();
+  renderEvents();
+
+  // Restore Claude key
+  const ck=localStorage.getItem(CLAUDE_KEY_K);
+  if(ck) document.getElementById('claude-key').value=ck;
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+{
+  "last_updated": "2026-05-10",
+  "note": "Special event dates sourced from iracing.com/special-events. Slot times follow the standard Fri 22:00 / Sat 07:00 / 12:00 / 16:00 UTC pattern unless noted.",
+  "races": [
+    {
+      "id": "special-daytona-2026",
+      "series": "special",
+      "name": "Rolex 24 at Daytona",
+      "track": "Daytona International Speedway",
+      "duration_h": 24,
+      "confirmed": true,
+      "car_classes": ["GTP", "LMP2", "GT3", "GT4"],
+      "slots": ["2026-01-23T22:00:00Z","2026-01-24T07:00:00Z","2026-01-24T12:00:00Z","2026-01-24T16:00:00Z"]
+    },
+    {
+      "id": "special-bathurst-2026",
+      "series": "special",
+      "name": "Bathurst 12h",
+      "track": "Mount Panorama Circuit",
+      "duration_h": 12,
+      "confirmed": true,
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-02-06T22:00:00Z","2026-02-07T07:00:00Z","2026-02-07T12:00:00Z","2026-02-07T16:00:00Z"]
+    },
+    {
+      "id": "special-sebring-2026",
+      "series": "special",
+      "name": "Sebring 12h",
+      "track": "Sebring International Raceway",
+      "duration_h": 12,
+      "confirmed": true,
+      "car_classes": ["GTP", "LMP2", "GT3", "GT4"],
+      "slots": ["2026-03-13T22:00:00Z","2026-03-14T07:00:00Z","2026-03-14T12:00:00Z","2026-03-14T16:00:00Z"]
+    },
+    {
+      "id": "special-nurburgring-2026",
+      "series": "special",
+      "name": "Nürburgring 24h",
+      "track": "Nürburgring Combined",
+      "duration_h": 24,
+      "confirmed": false,
+      "notes": "Not listed on iRacing special events page — verify at iracing.com/special-events",
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-05-22T22:00:00Z","2026-05-23T07:00:00Z","2026-05-23T12:00:00Z","2026-05-23T16:00:00Z"]
+    },
+    {
+      "id": "special-thruxton-2026",
+      "series": "special",
+      "name": "4 Hours at Thruxton",
+      "track": "Thruxton Circuit",
+      "duration_h": 4,
+      "confirmed": true,
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-05-29T22:00:00Z","2026-05-30T07:00:00Z","2026-05-30T12:00:00Z","2026-05-30T16:00:00Z"]
+    },
+    {
+      "id": "special-watkinsglen-2026",
+      "series": "special",
+      "name": "Watkins Glen 6 Hour",
+      "track": "Watkins Glen International",
+      "duration_h": 6,
+      "confirmed": true,
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-06-19T22:00:00Z","2026-06-20T07:00:00Z","2026-06-20T12:00:00Z","2026-06-20T16:00:00Z"]
+    },
+    {
+      "id": "special-spa-2026",
+      "series": "special",
+      "name": "Spa 24HR",
+      "track": "Circuit de Spa-Francorchamps",
+      "duration_h": 24,
+      "confirmed": true,
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-07-10T22:00:00Z","2026-07-11T07:00:00Z","2026-07-11T12:00:00Z","2026-07-11T16:00:00Z"]
+    },
+    {
+      "id": "special-roadamerica-2026",
+      "series": "special",
+      "name": "6 Hours of Road America",
+      "track": "Road America",
+      "duration_h": 6,
+      "confirmed": true,
+      "car_classes": ["GTP", "LMP2", "GT3"],
+      "slots": ["2026-07-24T22:00:00Z","2026-07-25T07:00:00Z","2026-07-25T12:00:00Z","2026-07-25T16:00:00Z"]
+    },
+    {
+      "id": "special-portimao-2026",
+      "series": "special",
+      "name": "Portimao 1000",
+      "track": "Autodromo Internacional do Algarve",
+      "duration_h": 6,
+      "confirmed": true,
+      "notes": "Approx 6h based on 1000km distance",
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-08-14T22:00:00Z","2026-08-15T07:00:00Z","2026-08-15T12:00:00Z","2026-08-15T16:00:00Z"]
+    },
+    {
+      "id": "special-suzuka-2026",
+      "series": "special",
+      "name": "Suzuka 1000km",
+      "track": "Suzuka Circuit",
+      "duration_h": 6,
+      "confirmed": true,
+      "notes": "Event window Sep 10–15. Slot times are estimates within that window.",
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-09-11T22:00:00Z","2026-09-12T07:00:00Z","2026-09-12T12:00:00Z","2026-09-12T16:00:00Z"]
+    },
+    {
+      "id": "special-britcar-2026",
+      "series": "special",
+      "name": "Britcar 24HR",
+      "track": "Silverstone Circuit",
+      "duration_h": 24,
+      "confirmed": true,
+      "notes": "New for 2026",
+      "car_classes": ["GT3", "GT4"],
+      "slots": ["2026-09-18T22:00:00Z","2026-09-19T07:00:00Z","2026-09-19T12:00:00Z","2026-09-19T16:00:00Z"]
+    },
+    {
+      "id": "special-petitemans-2026",
+      "series": "special",
+      "name": "Petit Le Mans",
+      "track": "Road Atlanta",
+      "duration_h": 10,
+      "confirmed": true,
+      "car_classes": ["GTP", "LMP2", "GT3", "GT4"],
+      "slots": ["2026-09-25T22:00:00Z","2026-09-26T07:00:00Z","2026-09-26T12:00:00Z","2026-09-26T16:00:00Z"]
+    },
+    {
+      "id": "special-indy-2026",
+      "series": "special",
+      "name": "8 Hours of Indianapolis",
+      "track": "Indianapolis Motor Speedway",
+      "duration_h": 8,
+      "confirmed": true,
+      "car_classes": ["GTP", "LMP2"],
+      "slots": ["2026-10-16T22:00:00Z","2026-10-17T07:00:00Z","2026-10-17T12:00:00Z","2026-10-17T16:00:00Z"]
+    },
+    {
+      "id": "special-992cup-2026",
+      "series": "special",
+      "name": "992 Endurance Cup",
+      "track": "TBA",
+      "duration_h": 12,
+      "confirmed": false,
+      "notes": "Track not yet announced",
+      "car_classes": ["Cup"],
+      "slots": ["2026-11-27T22:00:00Z","2026-11-28T07:00:00Z","2026-11-28T12:00:00Z","2026-11-28T16:00:00Z"]
+    },
+    {
+      "id": "special-vir-procar-2026",
+      "series": "special",
+      "name": "Production Car Challenge at VIR",
+      "track": "Virginia International Raceway",
+      "duration_h": 4,
+      "confirmed": true,
+      "car_classes": ["GT4", "Cup"],
+      "slots": ["2026-12-18T22:00:00Z","2026-12-19T07:00:00Z","2026-12-19T12:00:00Z","2026-12-19T16:00:00Z"]
+    },
+
+    {
+      "id": "nec-r1-2026", "series": "nec", "name": "NEC Round 1",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-03-21T07:00:00Z","2026-03-21T17:00:00Z","2026-03-22T00:00:00Z","2026-03-22T13:00:00Z"]
+    },
+    {
+      "id": "nec-r2-2026", "series": "nec", "name": "NEC Round 2",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-04-18T07:00:00Z","2026-04-18T17:00:00Z","2026-04-19T00:00:00Z","2026-04-19T13:00:00Z"]
+    },
+    {
+      "id": "nec-r3-2026", "series": "nec", "name": "NEC Round 3",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-05-16T07:00:00Z","2026-05-16T17:00:00Z","2026-05-17T00:00:00Z","2026-05-17T13:00:00Z"]
+    },
+    {
+      "id": "nec-r4-2026", "series": "nec", "name": "NEC Round 4",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-06-13T07:00:00Z","2026-06-13T17:00:00Z","2026-06-14T00:00:00Z","2026-06-14T13:00:00Z"]
+    },
+    {
+      "id": "nec-r5-2026", "series": "nec", "name": "NEC Round 5",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-06-27T07:00:00Z","2026-06-27T17:00:00Z","2026-06-28T00:00:00Z","2026-06-28T13:00:00Z"]
+    },
+    {
+      "id": "nec-r6-2026", "series": "nec", "name": "NEC Round 6 — 6h",
+      "track": "Nürburgring Combined", "duration_h": 6, "confirmed": true,
+      "notes": "6-hour round",
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-07-04T07:00:00Z","2026-07-04T17:00:00Z","2026-07-05T00:00:00Z","2026-07-05T13:00:00Z"]
+    },
+    {
+      "id": "nec-r7-2026", "series": "nec", "name": "NEC Round 7",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-08-01T07:00:00Z","2026-08-01T17:00:00Z","2026-08-02T00:00:00Z","2026-08-02T13:00:00Z"]
+    },
+    {
+      "id": "nec-r8-2026", "series": "nec", "name": "NEC Round 8",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-08-29T07:00:00Z","2026-08-29T17:00:00Z","2026-08-30T00:00:00Z","2026-08-30T13:00:00Z"]
+    },
+    {
+      "id": "nec-r9-2026", "series": "nec", "name": "NEC Round 9",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-09-26T07:00:00Z","2026-09-26T17:00:00Z","2026-09-27T00:00:00Z","2026-09-27T13:00:00Z"]
+    },
+    {
+      "id": "nec-r10-2026", "series": "nec", "name": "NEC Round 10",
+      "track": "Nürburgring Combined", "duration_h": 4, "confirmed": true,
+      "car_classes": ["GT3", "GT4", "Cup"],
+      "slots": ["2026-11-07T07:00:00Z","2026-11-07T17:00:00Z","2026-11-08T00:00:00Z","2026-11-08T13:00:00Z"]
+    },
+
+    {
+      "id": "get-s2-r1-2026", "series": "get", "name": "GET S2 Round 1",
+      "track": "Silverstone Circuit", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-03-28T07:00:00Z","2026-03-28T18:00:00Z","2026-03-29T14:00:00Z"]
+    },
+    {
+      "id": "get-s2-r2-2026", "series": "get", "name": "GET S2 Round 2",
+      "track": "Autodromo Internacional do Algarve", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-04-11T07:00:00Z","2026-04-11T18:00:00Z","2026-04-12T14:00:00Z"]
+    },
+    {
+      "id": "get-s2-r3-2026", "series": "get", "name": "GET S2 Round 3",
+      "track": "Autodromo Nazionale Monza", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-04-25T07:00:00Z","2026-04-25T18:00:00Z","2026-04-26T14:00:00Z"]
+    },
+    {
+      "id": "get-s2-r4-2026", "series": "get", "name": "GET S2 Round 4",
+      "track": "Circuit de Spa-Francorchamps", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-05-09T07:00:00Z","2026-05-09T18:00:00Z","2026-05-10T14:00:00Z"]
+    },
+    {
+      "id": "get-s2-r5-2026", "series": "get", "name": "GET S2 Round 5",
+      "track": "Nürburgring Grand Prix Circuit", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-05-23T07:00:00Z","2026-05-23T18:00:00Z","2026-05-24T14:00:00Z"]
+    },
+    {
+      "id": "get-s2-r6-2026", "series": "get", "name": "GET S2 Round 6",
+      "track": "Road America", "duration_h": 6, "confirmed": true,
+      "car_classes": ["LMP2", "GT3"],
+      "slots": ["2026-06-06T07:00:00Z","2026-06-06T18:00:00Z","2026-06-07T14:00:00Z"]
+    },
+
+    {
+      "id": "gte-s2-r1-2026", "series": "gte", "name": "GT Endurance S2 Round 1",
+      "track": "Autodromo Jose Carlos Pace", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-03-21T09:00:00Z","2026-03-21T19:00:00Z","2026-03-22T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r2-2026", "series": "gte", "name": "GT Endurance S2 Round 2",
+      "track": "Watkins Glen International", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-03-28T09:00:00Z","2026-03-28T19:00:00Z","2026-03-29T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r3-2026", "series": "gte", "name": "GT Endurance S2 Round 3",
+      "track": "Autodromo Nazionale Monza", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-04-04T09:00:00Z","2026-04-04T19:00:00Z","2026-04-05T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r4-2026", "series": "gte", "name": "GT Endurance S2 Round 4",
+      "track": "Road Atlanta", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-04-11T09:00:00Z","2026-04-11T19:00:00Z","2026-04-12T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r5-2026", "series": "gte", "name": "GT Endurance S2 Round 5",
+      "track": "Silverstone Circuit", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-04-18T09:00:00Z","2026-04-18T19:00:00Z","2026-04-19T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r6-2026", "series": "gte", "name": "GT Endurance S2 Round 6",
+      "track": "Circuit de Spa-Francorchamps", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-04-25T09:00:00Z","2026-04-25T19:00:00Z","2026-04-26T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r7-2026", "series": "gte", "name": "GT Endurance S2 Round 7",
+      "track": "Autodromo Internacional do Algarve", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-05-02T09:00:00Z","2026-05-02T19:00:00Z","2026-05-03T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r8-2026", "series": "gte", "name": "GT Endurance S2 Round 8",
+      "track": "Sebring International Raceway", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-05-09T09:00:00Z","2026-05-09T19:00:00Z","2026-05-10T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r9-2026", "series": "gte", "name": "GT Endurance S2 Round 9",
+      "track": "Nürburgring Grand Prix Circuit", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-05-16T09:00:00Z","2026-05-16T19:00:00Z","2026-05-17T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r10-2026", "series": "gte", "name": "GT Endurance S2 Round 10",
+      "track": "WeatherTech Raceway Laguna Seca", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-05-23T09:00:00Z","2026-05-23T19:00:00Z","2026-05-24T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r11-2026", "series": "gte", "name": "GT Endurance S2 Round 11",
+      "track": "Road America", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-05-30T09:00:00Z","2026-05-30T19:00:00Z","2026-05-31T17:00:00Z"]
+    },
+    {
+      "id": "gte-s2-r12-2026", "series": "gte", "name": "GT Endurance S2 Round 12",
+      "track": "Autodromo Nazionale Monza", "duration_h": 3, "confirmed": false,
+      "notes": "Track unconfirmed", "car_classes": ["GT3"],
+      "slots": ["2026-06-06T09:00:00Z","2026-06-06T19:00:00Z","2026-06-07T17:00:00Z"]
+    },
+
+    {
+      "id": "imsa-s2-r1-2026", "series": "imsa", "name": "IMSA S2 Round 1",
+      "track": "Adelaide Street Circuit", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-03-21T04:00:00Z","2026-03-21T15:00:00Z","2026-03-22T00:00:00Z","2026-03-22T20:00:00Z"]
+    },
+    {
+      "id": "imsa-s2-r2-2026", "series": "imsa", "name": "IMSA S2 Round 2",
+      "track": "Sonoma Raceway", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-04-04T04:00:00Z","2026-04-04T15:00:00Z","2026-04-05T00:00:00Z","2026-04-05T20:00:00Z"]
+    },
+    {
+      "id": "imsa-s2-r3-2026", "series": "imsa", "name": "IMSA S2 Round 3",
+      "track": "Barber Motorsports Park", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-04-18T04:00:00Z","2026-04-18T15:00:00Z","2026-04-19T00:00:00Z","2026-04-19T20:00:00Z"]
+    },
+    {
+      "id": "imsa-s2-r4-2026", "series": "imsa", "name": "IMSA S2 Round 4",
+      "track": "EuroSpeedway Lausitz", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-05-02T04:00:00Z","2026-05-02T15:00:00Z","2026-05-03T00:00:00Z","2026-05-03T20:00:00Z"]
+    },
+    {
+      "id": "imsa-s2-r5-2026", "series": "imsa", "name": "IMSA S2 Round 5",
+      "track": "Circuit of the Americas", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-05-16T04:00:00Z","2026-05-16T15:00:00Z","2026-05-17T00:00:00Z","2026-05-17T20:00:00Z"]
+    },
+    {
+      "id": "imsa-s2-r6-2026", "series": "imsa", "name": "IMSA S2 Round 6",
+      "track": "Fuji Speedway", "duration_h": 2, "confirmed": true,
+      "car_classes": ["LMP3", "GT4"],
+      "slots": ["2026-05-30T04:00:00Z","2026-05-30T15:00:00Z","2026-05-31T00:00:00Z","2026-05-31T20:00:00Z"]
+    },
+
+    {
+      "id": "gridfinder-2026-placeholder",
+      "series": "gridfinder",
+      "name": "Gridfinder iRTES 2026",
+      "track": "Various",
+      "duration_h": 0,
+      "confirmed": false,
+      "notes": "2026 season complete (7/7 events). Check gridfinder.com for 2027 season announcement.",
+      "car_classes": [],
+      "slots": []
+    }
+  ]
+}
