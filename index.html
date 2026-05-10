@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpMo Hub</title>
+<title>Operation Motorsport Hub</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 :root {
@@ -14,12 +14,13 @@
   --border: #30363d;
   --text: #e6edf3;
   --muted: #7d8590;
-  --accent: #f97316;
-  --accent-dim: rgba(249,115,22,.15);
-  --accent-hover: #ea580c;
+  --accent: #c4a87a;
+  --accent-dim: rgba(196,168,122,.15);
+  --accent-hover: #b8956a;
+  --red: #dc2626;
   --success: #3fb950;
   --danger: #f85149;
-  --special: #f59e0b;
+  --special: #d4a843;
   --nec: #10b981;
   --get: #60a5fa;
   --gte: #a78bfa;
@@ -29,6 +30,8 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(196,168,122,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(196,168,122,.018) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header,#tab-home,#tab-events,#tab-stats,#tab-profile,.modal-overlay{position:relative;z-index:1}
 a{color:var(--get);text-decoration:none}
 a:hover{text-decoration:underline}
 button{cursor:pointer;font-family:inherit}
@@ -44,10 +47,9 @@ header{
   padding:0 20px;height:52px;
   position:sticky;top:0;z-index:200;
 }
-.brand{display:flex;align-items:baseline;gap:5px;flex-shrink:0}
-.brand-logo{font-size:18px;font-weight:900;letter-spacing:-1px;line-height:1}
-.brand-logo span{color:var(--accent)}
-.brand-sub{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.brand{display:flex;flex-direction:column;justify-content:center;flex-shrink:0;line-height:1.1}
+.brand-op-hdr{font-size:8px;font-weight:800;letter-spacing:3px;color:var(--accent);text-transform:uppercase}
+.brand-moto-hdr{font-size:15px;font-weight:900;letter-spacing:-.5px;color:var(--text)}
 nav{display:flex;gap:2px;flex:1}
 .nav-btn{
   background:none;border:none;color:var(--muted);
@@ -96,20 +98,29 @@ nav{display:flex;gap:2px;flex:1}
 #tab-home.active{display:block}
 
 .hero-card{
-  background:linear-gradient(135deg,#1a2236 0%,#0d1117 60%,#1a1308 100%);
-  border:1px solid rgba(249,115,22,.25);
+  background:linear-gradient(160deg,#18160f 0%,#0d1117 50%,#111820 100%);
+  border:1px solid rgba(196,168,122,.2);
   border-radius:14px;padding:36px 32px;
   text-align:center;position:relative;overflow:hidden;
   margin-bottom:28px;
 }
 .hero-card::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% -20%,rgba(249,115,22,.08) 0%,transparent 70%);
+  background:radial-gradient(ellipse at 50% -20%,rgba(196,168,122,.07) 0%,transparent 65%);
 }
-.hero-wordmark{position:relative;margin-bottom:16px}
-.hero-opmo{font-size:42px;font-weight:900;letter-spacing:-2px;line-height:1}
-.hero-opmo span{color:var(--accent)}
-.hero-racing{font-size:11px;font-weight:700;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+/* eMotorsport League watermark */
+.hero-wm{
+  position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  font-size:74px;font-weight:900;letter-spacing:-2px;
+  color:rgba(196,168,122,.055);white-space:nowrap;
+  pointer-events:none;user-select:none;line-height:1;
+}
+.hero-wm em{font-style:italic;color:rgba(220,38,38,.12);font-size:84px}
+.hero-wordmark{position:relative;margin-bottom:0}
+.hero-op{font-size:11px;font-weight:800;letter-spacing:5px;color:var(--accent);text-transform:uppercase;margin-bottom:5px}
+.hero-moto{font-size:38px;font-weight:900;letter-spacing:-1px;line-height:1;color:var(--text)}
+.hero-oatat{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:5px}
+.hero-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(196,168,122,.3),transparent);margin:16px auto;width:60%}
 .hero-welcome{font-size:17px;font-weight:600;margin-bottom:4px;position:relative}
 .hero-driver{font-size:13px;color:var(--muted);margin-bottom:16px;position:relative}
 .hero-driver .num{color:var(--accent);font-weight:700}
@@ -332,7 +343,7 @@ nav{display:flex;gap:2px;flex:1}
 #tab-profile{display:none;max-width:600px;margin:0 auto;padding:28px 20px}
 #tab-profile.active{display:block}
 .profile-preview-card{
-  background:linear-gradient(135deg,#1a2236,#0d1117,#1a1308);
+  background:linear-gradient(160deg,#18160f,#0d1117,#111820);
   border:1px solid rgba(249,115,22,.2);border-radius:14px;
   padding:24px;text-align:center;margin-bottom:24px;
 }
@@ -385,8 +396,8 @@ nav{display:flex;gap:2px;flex:1}
 
 <header>
   <div class="brand">
-    <div class="brand-logo"><span>OP</span>MO</div>
-    <div class="brand-sub">Racing</div>
+    <div class="brand-op-hdr">OPERATION</div>
+    <div class="brand-moto-hdr">MOTORSPORT</div>
   </div>
   <nav>
     <button class="nav-btn active" data-tab="home">Home</button>
@@ -407,10 +418,13 @@ nav{display:flex;gap:2px;flex:1}
 <!-- HOME -->
 <div id="tab-home" class="tab">
   <div class="hero-card">
+    <div class="hero-wm"><em>e</em>MOTORSPORT LEAGUE</div>
     <div class="hero-wordmark">
-      <div class="hero-opmo"><span>OP</span>MO</div>
-      <div class="hero-racing">Racing</div>
+      <div class="hero-op">OPERATION</div>
+      <div class="hero-moto">MOTORSPORT</div>
+      <div class="hero-oatat">#OneAtATime</div>
     </div>
+    <div class="hero-divider"></div>
     <div class="hero-welcome">Welcome back, <span id="hero-name">Driver</span> <span id="hero-flag"></span></div>
     <div class="hero-driver">
       <span class="num">#<span id="hero-num"></span></span>
@@ -532,7 +546,10 @@ nav{display:flex;gap:2px;flex:1}
 <!-- SETUP MODAL -->
 <div class="modal-overlay" id="setup-modal">
   <div class="modal">
-    <div class="modal-logo"><span>OP</span>MO Racing</div>
+    <div class="modal-logo">
+      <div style="font-size:9px;letter-spacing:4px;color:var(--accent);font-weight:800;margin-bottom:2px">OPERATION</div>
+      <div>MOTORSPORT</div>
+    </div>
     <h2>Welcome to OpMo Hub</h2>
     <p>Set up your driver profile to get started.</p>
     <div class="form-row"><label>Your Name</label><input id="s-name" type="text" maxlength="30" placeholder="Your name"></div>
