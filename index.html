@@ -49,9 +49,8 @@ header{
   padding:0 20px;height:52px;
   position:sticky;top:0;z-index:200;
 }
-.brand{display:flex;flex-direction:column;justify-content:center;flex-shrink:0;line-height:1.1}
-.brand-op-hdr{font-size:8px;font-weight:800;letter-spacing:3px;color:var(--accent);text-transform:uppercase}
-.brand-moto-hdr{font-size:15px;font-weight:900;letter-spacing:-.5px;color:var(--text)}
+.brand{display:flex;align-items:center;flex-shrink:0}
+.brand-logo-hdr{height:36px;width:auto;display:block}
 nav{display:flex;gap:2px;flex:1}
 .nav-btn{
   background:none;border:none;color:var(--muted);
@@ -422,8 +421,7 @@ nav{display:flex;gap:2px;flex:1}
 
 <header>
   <div class="brand">
-    <div class="brand-op-hdr">OPERATION</div>
-    <div class="brand-moto-hdr">MOTORSPORT</div>
+    <img src="OpMo_eMotorsport_League_red_TPBG_NEG.png" alt="Operation eMotorsport League" class="brand-logo-hdr">
   </div>
   <nav>
     <button class="nav-btn active" data-tab="home">Home</button>
@@ -445,11 +443,8 @@ nav{display:flex;gap:2px;flex:1}
 <!-- HOME -->
 <div id="tab-home" class="tab active">
   <div class="hero-card">
-    <div class="hero-wm"><em>e</em>MOTORSPORT LEAGUE</div>
     <div class="hero-wordmark">
-      <div class="hero-op">OPERATION</div>
-      <div class="hero-moto">MOTORSPORT</div>
-      <div class="hero-oatat">#OneAtATime</div>
+      <img src="OpMo_eMotorsport_League_red_TPBG_NEG.png" alt="Operation eMotorsport League" style="width:100%;max-width:420px;height:auto;display:block;margin:0 auto;">
     </div>
     <div class="hero-divider"></div>
     <div class="hero-welcome">Welcome back, <span id="hero-name">Driver</span> <span id="hero-flag"></span></div>
